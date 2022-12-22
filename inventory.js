@@ -473,10 +473,13 @@ function expensiveItems(inventory) {
     }
   }
 
-  // console.log(mostExpensive);
   return mostExpensive;
 }
 
+/**
+ * returns cds that are longer than 60 minutes.
+ * @param {obj} inventory The inventory JSON object.
+ */
 function findLongCds(inventory) {
   var longCds ={};
 
@@ -498,7 +501,6 @@ function findLongCds(inventory) {
       }
     }
   }
-  console.log(longCds);
   return longCds
 }
 
