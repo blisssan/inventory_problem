@@ -446,7 +446,6 @@ var inventory = [{
 
 }];
 
-
 /**
  * returns the five most expensive items from each category.
  * @param {obj} inventory The inventory JSON object.
@@ -474,8 +473,30 @@ function expensiveItems(inventory) {
     }
   }
 
-  console.log(mostExpensive);
+  // console.log(mostExpensive);
   return mostExpensive;
 }
 
+function findLongCds(inventory) {
+  var longCds ={};
+
+  for (let i = 0; i < inventory.length; i++) {
+
+    // Go through the a cd and its tracks to get the total length
+    if (inventory[i].type == "cd") {
+      var totalSeconds = 0
+      for (let y = 0; y < inventory[i].tracks.length; y++) {
+        totalSeconds += inventory[i].tracks[y].seconds;
+      }
+      if (totalSeconds > 3600) {
+        var title = inventory[i].title;
+        longCds[title] = (inventory[i]);
+      }
+    }
+  }
+  console.log(longCds);
+  return longCds
+}
+
+findLongCds(inventory);
 expensiveItems(inventory);
