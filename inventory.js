@@ -529,6 +529,31 @@ function findCdBookAuthors(inventory) {
   return cdBookAuthors;
 }
 
+/**
+ * returns true if a book or cd contains a year in its chapters or tracks.
+ * @param {obj} inventory The inventory JSON object.
+ */
+function checkBooksAndCdsForYear(inventoryItem) {
+  const regex = /\d\d\d\d/;
+  if (inventoryItem.type == "book") {
+    for (let y = 0; y < inventoryItem.chapters.length; y++) {
+      if (inventoryItem.chapters[y].match(regex)) {
+        return true;
+      }
+    }
+  }
+
+  // Check cd tracks
+  else if (inventoryItem.type == "cd") {
+    for (let y = 0; y < inventoryItem.tracks.length; y++) {
+      if (inventoryItem.tracks[y]["name"].match(regex)) {
+        return true;
+      }
+    }
+  }
+  return false;
+}
+
 function findItemsThatContainYear(inventory) {
   var itemsThatContainYear = [];
   const regex = /\d\d\d\d/;
@@ -545,20 +570,16 @@ function findItemsThatContainYear(inventory) {
 
       // check book chapters
       if (inventory[i].type == "book") {
-        for (let y = 0; y < inventory[i].chapters.length; y++) {
-          if (inventory[i].chapters[y].match(regex)) {
-            itemsThatContainYear.push(inventory[i]);
-          }
-        }
+        if (checkBooksAndCdsForYear(inventory[i]) == true) {
+          itemsThatContainYear.push(inventory[i]);
+        };
       }
 
       // Check cd tracks
       else if (inventory[i].type == "cd") {
-        for (let y = 0; y < inventory[i].tracks.length; y++) {
-          if (inventory[i].tracks[y]["name"].match(regex)) {
-            itemsThatContainYear.push(inventory[i]);
-          }
-        }
+        if (checkBooksAndCdsForYear(inventory[i]) == true) {
+          itemsThatContainYear.push(inventory[i]);
+        };
       }
     }
   }
