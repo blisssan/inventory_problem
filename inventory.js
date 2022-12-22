@@ -482,12 +482,16 @@ function findLongCds(inventory) {
 
   for (let i = 0; i < inventory.length; i++) {
 
-    // Go through the a cd and its tracks to get the total length
+    // Go through the a cd
     if (inventory[i].type == "cd") {
       var totalSeconds = 0
+
+      // Go through its tracks and find the total length
       for (let y = 0; y < inventory[i].tracks.length; y++) {
         totalSeconds += inventory[i].tracks[y].seconds;
       }
+
+      // Add the cd to the list of long cds if its longer than 3600s
       if (totalSeconds > 3600) {
         var title = inventory[i].title;
         longCds[title] = (inventory[i]);
