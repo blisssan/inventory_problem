@@ -504,5 +504,31 @@ function findLongCds(inventory) {
   return longCds
 }
 
-findLongCds(inventory);
+function findCdBookAuthors(inventory) {
+  var cdBookAuthors = [];
+  var bookAuthors = [];
+  var cdAuthors = [];
+
+  // populate the list of book authors and list of cd authors
+  for (let i = 0; i < inventory.length; i++) {
+    if (inventory[i].type == "book") {
+      bookAuthors.push(inventory[i].author);
+    }
+    else if (inventory[i].type == "cd") {
+      cdAuthors.push(inventory[i].author);
+    }
+  }
+
+  // compare both lists and add authors that appear in both lists to the list
+  // of authors that have released cds and books.
+  for (let i = 0; i < cdAuthors.length; i++) {
+    if (bookAuthors.includes(cdAuthors[i])) {
+      cdBookAuthors.push(cdAuthors[i]);
+    }
+  }
+  return cdBookAuthors;
+}
+
 expensiveItems(inventory);
+findLongCds(inventory);
+findCdBookAuthors(inventory);
