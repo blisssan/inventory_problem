@@ -529,6 +529,42 @@ function findCdBookAuthors(inventory) {
   return cdBookAuthors;
 }
 
+function findItemsThatContainYear(inventory) {
+  var itemsThatContainYear = [];
+  const regex = /\d\d\d\d/;
+
+  // Go through the inventory
+  for (let i = 0; i < inventory.length; i++) {
+
+    // Add the item if the title contains a year and don't bother checking
+    // any chapters or tracks
+    if (inventory[i].title.match(regex)) {
+      itemsThatContainYear.push(inventory[i]);
+    }
+    else {
+
+      // check book chapters
+      if (inventory[i].type == "book") {
+        for (let y = 0; y < inventory[i].chapters.length; y++) {
+          if (inventory[i].chapters[y].match(regex)) {
+            itemsThatContainYear.push(inventory[i]);
+          }
+        }
+      }
+
+      // Check cd tracks
+      else if (inventory[i].type == "cd") {
+        for (let y = 0; y < inventory[i].tracks.length; y++) {
+          if (inventory[i].tracks[y]["name"].match(regex)) {
+            itemsThatContainYear.push(inventory[i]);
+          }
+        }
+      }
+    }
+  }
+  return itemsThatContainYear;
+}
 expensiveItems(inventory);
 findLongCds(inventory);
 findCdBookAuthors(inventory);
+findItemsThatContainYear(inventory);
