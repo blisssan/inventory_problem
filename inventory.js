@@ -446,9 +446,10 @@ var inventory = [{
 
 }];
 
+
 /**
  * returns the five most expensive items from each category.
- * @param {obj} inventory The inventory JSON object.
+ * @param {array} inventory The inventory list composed of JSON objects.
  */
 function expensiveItems(inventory) {
   var mostExpensive = new Object();
@@ -456,8 +457,8 @@ function expensiveItems(inventory) {
   // sort the items by price
   inventory.sort((firstItem, secondItem) => secondItem.price - firstItem.price);
 
-  // Adds a list for each product type to the object that will contain the five
-  // most expensive proucts for each type.
+  // Adds a list for each product type to the mostExpensive object and sets the
+  // key to that type's name.
   for (let i = 0; i < inventory.length; i++) {
     if (mostExpensive.hasOwnProperty(inventory[i].type) == false) {
       var typeToAdd = inventory[i].type;
@@ -472,24 +473,22 @@ function expensiveItems(inventory) {
       mostExpensive[typeToAdd].push(inventory[i]);
     }
   }
-
   return mostExpensive;
 }
 
+
 /**
  * returns cds that are longer than 60 minutes.
- * @param {obj} inventory The inventory JSON object.
+ * @param {array} inventory The inventory list composed of JSON objects.
  */
 function findLongCds(inventory) {
   var longCds ={};
 
   for (let i = 0; i < inventory.length; i++) {
-
-    // Go through the a cd
     if (inventory[i].type == "cd") {
       var totalSeconds = 0
 
-      // Go through its tracks and find the total length
+      // Go through cd tracks and find the total length
       for (let y = 0; y < inventory[i].tracks.length; y++) {
         totalSeconds += inventory[i].tracks[y].seconds;
       }
@@ -504,12 +503,17 @@ function findLongCds(inventory) {
   return longCds
 }
 
+
+/**
+ * returns authors who have also released cds.
+ * @param {array} inventory The inventory list composed of JSON objects.
+ */
 function findCdBookAuthors(inventory) {
   var cdBookAuthors = [];
   var bookAuthors = [];
   var cdAuthors = [];
 
-  // populate the list of book authors and list of cd authors
+  // populate lists of book authors and cd authors
   for (let i = 0; i < inventory.length; i++) {
     if (inventory[i].type == "book") {
       bookAuthors.push(inventory[i].author);
@@ -529,9 +533,10 @@ function findCdBookAuthors(inventory) {
   return cdBookAuthors;
 }
 
+
 /**
  * returns true if a book or cd contains a year in its chapters or tracks.
- * @param {obj} inventory The inventory JSON object.
+ * @param {obj} inventoryItem An inventory item.
  */
 function checkBooksAndCdsForYear(inventoryItem) {
   const regex = /\d\d\d\d/;
@@ -554,6 +559,11 @@ function checkBooksAndCdsForYear(inventoryItem) {
   return false;
 }
 
+
+/**
+ * returns a list of items that contain years in titles, tracks, or chapters.
+ * @param {array} inventory The inventory list composed of JSON objects.
+ */
 function findItemsThatContainYear(inventory) {
   var itemsThatContainYear = [];
   const regex = /\d\d\d\d/;
