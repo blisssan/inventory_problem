@@ -450,6 +450,7 @@ var inventory = [{
 /**
  * returns the five most expensive items from each category.
  * @param {array} inventory The inventory list composed of JSON objects.
+ * @return {obj} object containing the five most expensive items in each category.
  */
 function expensiveItems(inventory) {
   var mostExpensive = new Object();
@@ -457,7 +458,7 @@ function expensiveItems(inventory) {
   // sort the items by price
   inventory.sort((firstItem, secondItem) => secondItem.price - firstItem.price);
 
-  // Adds a list for each product type to the mostExpensive object and sets the
+  // Adds a list for each product type to the mostExpensive object and set the
   // key to that type's name.
   for (let i = 0; i < inventory.length; i++) {
     if (mostExpensive.hasOwnProperty(inventory[i].type) == false) {
@@ -466,7 +467,7 @@ function expensiveItems(inventory) {
     }
   }
 
-  // Adds the five most expensive items of each type to the mostExpensive object
+  // Add the five most expensive items of each type to the mostExpensive object
   for (let i = 0; i < inventory.length; i++) {
     var typeToAdd = inventory[i].type;
     if (mostExpensive[typeToAdd].length < 5) {
@@ -480,6 +481,7 @@ function expensiveItems(inventory) {
 /**
  * returns cds that are longer than 60 minutes.
  * @param {array} inventory The inventory list composed of JSON objects.
+ * @return {obj} object containing cds longer than 60 minutes.
  */
 function findLongCds(inventory) {
   var longCds ={};
@@ -507,6 +509,7 @@ function findLongCds(inventory) {
 /**
  * returns authors who have also released cds.
  * @param {array} inventory The inventory list composed of JSON objects.
+ * @return {array} list of authors who have also released a cd.
  */
 function findCdBookAuthors(inventory) {
   var cdBookAuthors = [];
@@ -537,6 +540,7 @@ function findCdBookAuthors(inventory) {
 /**
  * returns true if a book or cd contains a year in its chapters or tracks.
  * @param {obj} inventoryItem An inventory item.
+ * @return {boolean} true or false.
  */
 function checkBooksAndCdsForYear(inventoryItem) {
   const regex = /\d\d\d\d/;
@@ -563,6 +567,7 @@ function checkBooksAndCdsForYear(inventoryItem) {
 /**
  * returns a list of items that contain years in titles, tracks, or chapters.
  * @param {array} inventory The inventory list composed of JSON objects.
+ * @return {array} list of items that contain a year in title, track, or chapter.
  */
 function findItemsThatContainYear(inventory) {
   var itemsThatContainYear = [];
@@ -579,23 +584,20 @@ function findItemsThatContainYear(inventory) {
     else {
 
       // check book chapters
-      if (inventory[i].type == "book") {
-        if (checkBooksAndCdsForYear(inventory[i]) == true) {
+      if (inventory[i].type == "book" && checkBooksAndCdsForYear(inventory[i]) == true) {
           itemsThatContainYear.push(inventory[i]);
-        };
       }
 
       // Check cd tracks
-      else if (inventory[i].type == "cd") {
-        if (checkBooksAndCdsForYear(inventory[i]) == true) {
+      else if (inventory[i].type == "cd" && checkBooksAndCdsForYear(inventory[i]) == true) {
           itemsThatContainYear.push(inventory[i]);
-        };
       }
     }
   }
   return itemsThatContainYear;
 }
-expensiveItems(inventory);
-findLongCds(inventory);
-findCdBookAuthors(inventory);
-findItemsThatContainYear(inventory);
+
+var expensiveItemsByCategory = expensiveItems(inventory);
+var longCds = findLongCds(inventory);
+var cdAndBookAuthors = findCdBookAuthors(inventory);
+var itemsThatContainYear = findItemsThatContainYear(inventory);
